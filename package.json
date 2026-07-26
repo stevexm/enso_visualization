@@ -1,0 +1,22 @@
+{
+  "name": "enso-dashboard",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "data:build": "tsx data-prep/src/build.ts",
+    "data:typecheck": "tsc -p data-prep/tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "tsx": "^4.23.1",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.1"
+  },
+  "dependencies": {
+    "@observablehq/plot": "^0.6.17"
+  }
+}
