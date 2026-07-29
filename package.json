@@ -4,19 +4,30 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "npm run data:refresh",
     "dev": "vite",
+    "prebuild": "npm run data:refresh",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "data:refresh": "tsx data-prep/src/refresh.ts && npm run data:build",
+    "data:refresh:force": "tsx data-prep/src/refresh.ts --force && npm run data:build",
     "data:build": "tsx data-prep/src/build.ts",
     "data:typecheck": "tsc -p data-prep/tsconfig.json"
   },
   "devDependencies": {
+    "@types/geojson": "^7946.0.16",
     "@types/node": "^26.1.1",
+    "@types/topojson-client": "^3.1.5",
+    "@types/topojson-specification": "^1.0.5",
     "tsx": "^4.23.1",
     "typescript": "~6.0.2",
     "vite": "^8.1.1"
   },
   "dependencies": {
-    "@observablehq/plot": "^0.6.17"
+    "@observablehq/plot": "^0.6.17",
+    "katex": "^0.18.1",
+    "rg": "^0.0.2",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
   }
 }

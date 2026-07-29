@@ -228,6 +228,28 @@ $$\frac{dh}{dt} = -\epsilon\, h - F_2\, T$$
 - $\epsilon$ — basin-adjustment damping (ocean Rossby/Kelvin wave transit)
 - $F_1, F_2$ — coupling terms linking the two variables
 
+**Why $R$, $F_1$, $F_2$ matter here even though this project never fits them:** each
+term in these two equations is a *signed* claim about which direction a variable should
+be pushing another, and that's exactly what §2.2's cross-check verifies empirically
+instead of by simulation. $R\,T$ says a warm $T$ should, on its own, keep growing (the
+Bjerknes feedback runs away) — that's the reinforcing loop in §2.2's four numbered
+steps. $F_1\,h$ says a deep thermocline ($h>0$, i.e. positive WWV) should also be
+pushing $T$ upward — that's why §2.2 checks for a *positive* WWV z-score, not just a
+negative SOI. This project doesn't know the actual values of $R$, $F_1$, $F_2$ (fitting
+them would mean solving the system, which it deliberately doesn't do) — but it checks
+that the *signs* implied by this model actually showed up in the observed data for each
+qualifying ONI event.
+
+**A worked example, using real recent readings:** as of the data currently checked in
+(see the main README for how to refresh it), ONI stood at +0.98°C and the WWV z-score at
++1.86 for the same period. In the recharge-oscillator language above, that's $T>0$ (warm)
+*and* $h>0$ (deep thermocline / heat-content surplus) at the same time — both terms on
+the right of $\frac{dT}{dt} = R\,T + F_1\,h$ are positive, so the model says this is
+exactly the situation where the feedback should be actively reinforcing the warm
+anomaly, not just coinciding with it. That's the qualitative claim §2.2 turns into an
+actual pass/fail check (mean SOI negative, mean WWV z positive, mean East Pacific wind z
+negative) for every ONI-qualified episode.
+
 This project doesn't solve this system — no ODE is integrated in `data-prep/`, only
 observed data is classified — but it's the textbook dynamical form of the exact feedback
 loop the §2.2 cross-check tests for empirically.
@@ -239,15 +261,17 @@ loop the §2.2 cross-check tests for empirically.
 
 ## 4. Architecture decisions
 
-- **Build-time pipeline, not a live API call.** `data-prep/` is a Node/TypeScript script
-  (`npm run data:build`) that reads the already-downloaded raw NOAA text files, parses,
-  merges, and classifies them, then writes static JSON (`public/data/enso-monthly.json`,
-  `public/data/enso-events.json`) for the browser to load. NOAA's CPC/PMEL endpoints don't
-  send an `Access-Control-Allow-Origin` header (checked directly with `curl -I` against
+- **Build-time pipeline, not a live browser API call.** `data-prep/` is a Node/TypeScript
+  pipeline that downloads the raw NOAA text files into `data-prep/raw/`
+  (`data-prep/src/refresh.ts`), parses, merges, and classifies them (`npm run data:build`),
+  then writes static JSON (`public/data/enso-monthly.json`, `public/data/enso-events.json`)
+  for the browser to load. NOAA's CPC/PMEL endpoints don't send an
+  `Access-Control-Allow-Origin` header (checked directly with `curl -I` against
   `oni.ascii.txt` and `wwv.dat`), so an in-browser `fetch` from the dashboard's own origin
   would be blocked by CORS; the underlying data also only updates monthly, so a build-time
-  refresh is both more robust and faster than fetching live on every page load. To refresh:
-  re-download the six files in `data-prep/raw/`, then rerun `npm run data:build`.
+  refresh is both more robust and faster than fetching live on every page load. `npm run
+  dev`/`npm run build` run this refresh automatically (`predev`/`prebuild`), so there's no
+  manual re-download step (see the main README).
 - **Fixed-width parsing, not whitespace-split.** Several NOAA tables (`soi`, `*850`) pack
   each monthly value into an exact 6-character field with no guaranteed separating space
   — a run of negative numbers can render as `...-1.4-999.9...` — which breaks a naive

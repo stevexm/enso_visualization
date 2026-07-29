@@ -80,4 +80,4 @@ const latest = records[records.length - 1];
 const latestWithOni = [...records].reverse().find((r) => r.oniAnom !== null);
 console.log(`Wrote ${records.length} monthly records (${records[0].date} to ${latest.date}).`);
 console.log(`Found ${events.length} ENSO events (>= 5 consecutive months at |ONI| >= 0.5).`);
-console.log(`Latest ONI: ${latestWithOni?.oniAnom} (${latestWithOni?.date})`);
+console.log(`ONI: ${latestWithOni?.oniAnom} (${latestWithOni?.date})`);

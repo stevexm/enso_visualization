@@ -18,6 +18,14 @@ export function formatShortMonth(date: string): string {
   return MONTH_NAMES[month - 1];
 }
 
+/** Whole months between two "YYYY-MM" dates (b - a). Used to turn an event's
+ * start->peak span into a rate rather than a raw ONI delta. */
+export function monthsBetween(a: string, b: string): number {
+  const [ay, am] = a.split("-").map(Number);
+  const [by, bm] = b.split("-").map(Number);
+  return by * 12 + bm - (ay * 12 + am);
+}
+
 export function formatSigned(value: number | null, digits = 2): string {
   if (value === null || !Number.isFinite(value)) return "—";
   const sign = value > 0 ? "+" : "";
@@ -38,6 +46,24 @@ const CATEGORY_LABEL: Record<EnsoCategory, string> = {
 
 export function categoryLabel(category: EnsoCategory): string {
   return CATEGORY_LABEL[category];
+}
+
+/** Cold-to-warm rank, mirroring the ONI number line -- used to sort the event
+ * catalog by category the same way its underlying strength tiers are ordered. */
+const CATEGORY_RANK: Record<EnsoCategory, number> = {
+  "very-strong-la-nina": -4,
+  "strong-la-nina": -3,
+  "moderate-la-nina": -2,
+  "weak-la-nina": -1,
+  neutral: 0,
+  "weak-el-nino": 1,
+  "moderate-el-nino": 2,
+  "strong-el-nino": 3,
+  "very-strong-el-nino": 4,
+};
+
+export function categoryRank(category: EnsoCategory): number {
+  return CATEGORY_RANK[category];
 }
 
 /** Classifies a single ONI reading using the same tiers as data-prep/src/classify.ts,
@@ -67,6 +93,16 @@ export const DATE_RANGE_PRESETS: DateRangePreset[] = [
     key: "10y",
     label: "Last 10 years",
     startDate: (latest) => shiftYears(latest, -10),
+  },
+  {
+    key: "5y",
+    label: "Last 5 years",
+    startDate: (latest) => shiftYears(latest, -5),
+  },
+  {
+    key: "2y",
+    label: "Last 2 years",
+    startDate: (latest) => shiftYears(latest, -2),
   },
 ];
 

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Local cache of when data-prep/src/refresh.ts last checked NOAA
+data-prep/raw/.last-refresh
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

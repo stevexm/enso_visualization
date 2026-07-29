@@ -13,6 +13,17 @@
   --diverging-cool: #2a78d6; /* La Nina / cool pole */
   --diverging-mid: #f0efec;
 
+  /* Category strength ramp -- one ordinal ramp per phase (weak -> very-strong),
+     palest = weak, boldest = very-strong. Names match EnsoCategory exactly. */
+  --cat-weak-el-nino: #f78b84;
+  --cat-moderate-el-nino: #f5615d;
+  --cat-strong-el-nino: #e93239;
+  --cat-very-strong-el-nino: #c6292f;
+  --cat-weak-la-nina: #79aff5;
+  --cat-moderate-la-nina: #5098f3;
+  --cat-strong-la-nina: #2780ea;
+  --cat-very-strong-la-nina: #1f6cc6;
+
   --series-1: #2a78d6; /* blue    -- SOI */
   --series-2: #008300; /* green   -- WWV heat-content z */
   --series-3: #e87ba4; /* magenta -- trade wind z */
@@ -25,42 +36,60 @@
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme="light"])) {
     color-scheme: dark;
-    --surface-1: #1a1a19;
-    --page-plane: #0d0d0d;
+    --surface-1: #232322;
+    --page-plane: #121212;
     --text-primary: #ffffff;
-    --text-secondary: #c3c2b7;
-    --muted: #898781;
-    --gridline: #2c2c2a;
-    --baseline: #383835;
-    --border: rgba(255, 255, 255, 0.1);
+    --text-secondary: #d3d2c9;
+    --muted: #a3a19a;
+    --gridline: #3a3a37;
+    --baseline: #4c4c47;
+    --border: rgba(255, 255, 255, 0.18);
 
     --diverging-warm: #e66767;
     --diverging-cool: #3987e5;
-    --diverging-mid: #383835;
+    --diverging-mid: #3a3a37;
+
+    --cat-weak-el-nino: #a6202d;
+    --cat-moderate-el-nino: #c82938;
+    --cat-strong-el-nino: #eb3243;
+    --cat-very-strong-el-nino: #f56365;
+    --cat-weak-la-nina: #17569e;
+    --cat-moderate-la-nina: #1f6ac0;
+    --cat-strong-la-nina: #267ee2;
+    --cat-very-strong-la-nina: #4894f2;
 
     --series-1: #3987e5;
-    --series-2: #008300;
+    --series-2: #1fae1f;
     --series-3: #d55181;
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --surface-1: #1a1a19;
-  --page-plane: #0d0d0d;
+  --surface-1: #232322;
+  --page-plane: #121212;
   --text-primary: #ffffff;
-  --text-secondary: #c3c2b7;
-  --muted: #898781;
-  --gridline: #2c2c2a;
-  --baseline: #383835;
-  --border: rgba(255, 255, 255, 0.1);
+  --text-secondary: #d3d2c9;
+  --muted: #a3a19a;
+  --gridline: #3a3a37;
+  --baseline: #4c4c47;
+  --border: rgba(255, 255, 255, 0.18);
 
   --diverging-warm: #e66767;
   --diverging-cool: #3987e5;
-  --diverging-mid: #383835;
+  --diverging-mid: #3a3a37;
+
+  --cat-weak-el-nino: #a6202d;
+  --cat-moderate-el-nino: #c82938;
+  --cat-strong-el-nino: #eb3243;
+  --cat-very-strong-el-nino: #f56365;
+  --cat-weak-la-nina: #17569e;
+  --cat-moderate-la-nina: #1f6ac0;
+  --cat-strong-la-nina: #267ee2;
+  --cat-very-strong-la-nina: #4894f2;
 
   --series-1: #3987e5;
-  --series-2: #008300;
+  --series-2: #1fae1f;
   --series-3: #d55181;
 }
 
@@ -87,10 +116,36 @@ body {
   padding: 24px 20px 64px;
 }
 
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 .page-header h1 {
   font-size: 22px;
   font-weight: 600;
   margin: 0;
+}
+
+.theme-toggle {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-1);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--text-primary);
 }
 
 .page-header .subtitle {
@@ -118,11 +173,115 @@ body {
   margin: 20px 0;
   flex-wrap: wrap;
 }
+.chart-card .filter-row {
+  margin: 8px 0 14px;
+}
 
 .filter-row .filter-label {
   color: var(--text-secondary);
   font-size: 13px;
   margin-right: 4px;
+}
+
+/* Controls bar (smoothing slider) -- a slim card, same visual language as the chart
+ * cards below it, instead of loose text floating under the header. */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin: 20px 0 24px;
+}
+
+.controls-bar .filter-label {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.controls-bar input[type="range"] {
+  width: 180px;
+  accent-color: var(--text-primary);
+}
+
+.controls-bar #smoothing-value {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.controls-bar-note {
+  color: var(--muted);
+  font-size: 12px;
+  margin-left: auto;
+}
+
+/* Custom period (dual-handle) range slider, below the ONI chart */
+.range-slider-block {
+  margin: 14px 0 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--gridline);
+}
+
+.range-slider-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.range-slider-header .filter-label {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.range-slider-label {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.range-slider-track {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--gridline);
+  margin: 0 8px 18px;
+}
+
+.range-slider-selected {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--text-primary);
+  cursor: grab;
+}
+.range-slider-selected:active {
+  cursor: grabbing;
+}
+
+.range-slider-thumb {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--surface-1);
+  border: 2px solid var(--text-primary);
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  touch-action: none;
+}
+.range-slider-thumb:active {
+  cursor: grabbing;
+}
+.range-slider-thumb:focus-visible {
+  outline: 2px solid var(--series-1);
+  outline-offset: 2px;
 }
 
 .filter-chip {
@@ -249,8 +408,30 @@ body {
   padding: 4px 10px;
   cursor: pointer;
 }
+summary.table-toggle {
+  display: inline-block;
+}
 .table-toggle:hover {
   color: var(--text-primary);
+}
+.table-toggle[aria-pressed="true"] {
+  background: var(--text-primary);
+  color: var(--surface-1);
+  border-color: var(--text-primary);
+}
+
+/* "info" / "view events" toggle buttons, side by side; their panels live outside
+   this row (below, full width) so an expanded panel never pushes the other button
+   out of line (see initInfoToggles in main.ts). */
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 4px 0 10px;
+}
+.info-panel {
+  margin: 0 0 14px;
 }
 
 .chart-mount {
@@ -263,22 +444,138 @@ body {
 
 .legend-row {
   display: flex;
-  gap: 16px;
+  align-items: center;
+  gap: 10px;
   flex-wrap: wrap;
   font-size: 12px;
   color: var(--text-secondary);
-  margin: 4px 0 10px;
+  margin: 4px 0 4px;
 }
 .legend-row .legend-item {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 4px 10px 4px 8px;
+  cursor: pointer;
+}
+.legend-row .legend-item:hover {
+  border-color: var(--border);
+}
+.legend-row .legend-item[aria-pressed="true"] {
+  color: var(--text-primary);
+  background: var(--gridline);
+}
+.legend-row .legend-item.legend-item-hidden {
+  color: var(--muted);
+  opacity: 0.55;
+}
+.legend-row .legend-item.legend-item-hidden .swatch {
+  opacity: 0.4;
 }
 .legend-row .swatch {
   display: inline-block;
   width: 14px;
   height: 2px;
   border-radius: 1px;
+}
+
+.link-button {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+.link-button:hover {
+  color: var(--text-primary);
+}
+
+.legend-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+
+#variable-detail:empty {
+  margin: 0;
+}
+.variable-detail-empty {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+.variable-detail-card {
+  background: var(--page-plane);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 0 0 12px;
+}
+.variable-detail-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.variable-detail-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+
+/* KaTeX callouts (How to read this chart / Bjerknes feedback) */
+details.how-to-read {
+  margin: 4px 0 10px;
+}
+.math-block {
+  margin: 6px 0;
+  overflow-x: auto;
+}
+.math-note {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 6px 0 0;
+}
+.math-inline .katex {
+  font-size: 1.05em;
+}
+.info-divider {
+  border: none;
+  border-top: 1px solid var(--gridline);
+  margin: 18px 0;
+}
+
+.math-legend {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 12px 0 0;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--gridline);
+  list-style: none;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.math-legend li {
+  display: contents;
+}
+.math-legend-symbol {
+  justify-self: start;
+  min-width: 28px;
+}
+.math-legend-symbol .katex {
+  font-size: 1.3em;
 }
 
 /* Tooltip */
@@ -369,9 +666,75 @@ table.events-table th {
   font-size: 12px;
   font-weight: 600;
 }
+table.events-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+table.events-table th.sortable:hover {
+  color: var(--text-primary);
+}
+table.events-table th.sortable.sort-active {
+  color: var(--text-primary);
+}
+table.events-table th.sortable:focus-visible {
+  outline: 2px solid var(--series-1);
+  outline-offset: -2px;
+}
 table.events-table td.num {
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+table.events-table tbody tr.event-row {
+  cursor: pointer;
+}
+table.events-table tbody tr.event-row:hover {
+  background: var(--page-plane);
+}
+table.events-table tbody tr.event-row:focus-visible {
+  outline: 2px solid var(--series-1);
+  outline-offset: -2px;
+}
+
+.cat-weak-el-nino {
+  color: var(--cat-weak-el-nino);
+}
+.cat-moderate-el-nino {
+  color: var(--cat-moderate-el-nino);
+}
+.cat-strong-el-nino {
+  color: var(--cat-strong-el-nino);
+}
+.cat-very-strong-el-nino {
+  color: var(--cat-very-strong-el-nino);
+}
+.cat-weak-la-nina {
+  color: var(--cat-weak-la-nina);
+}
+.cat-moderate-la-nina {
+  color: var(--cat-moderate-la-nina);
+}
+.cat-strong-la-nina {
+  color: var(--cat-strong-la-nina);
+}
+.cat-very-strong-la-nina {
+  color: var(--cat-very-strong-la-nina);
+}
+
+table.category-legend {
+  border-collapse: collapse;
+  font-size: 12px;
+  margin: 10px 0 4px;
+}
+table.category-legend th,
+table.category-legend td {
+  text-align: left;
+  padding: 4px 14px 4px 0;
+}
+table.category-legend th {
+  color: var(--text-secondary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--gridline);
 }
 
 .confirm-yes {
