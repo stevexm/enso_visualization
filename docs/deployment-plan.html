@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ENSO Dashboard — Web Deployment Plan (Demo)</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="data:text/css,body%7Bfont%2Dfamily%3A%2Dapple%2Dsystem%2C%22Segoe%20UI%22%2CHelvetica%2CArial%2Csans%2Dserif%3Bmax%2Dwidth%3A860px%3Bmargin%3A2rem%20auto%3Bpadding%3A0%201%2E2rem%3Bline%2Dheight%3A1%2E55%3Bcolor%3A%231d2330%3Bfont%2Dsize%3A15px%7D%0Ah1%7Bfont%2Dsize%3A1%2E9rem%3Bborder%2Dbottom%3A2px%20solid%20%232a78d6%3Bpadding%2Dbottom%3A%2E3rem%7D%0Ah2%7Bmargin%2Dtop%3A2rem%3Bborder%2Dbottom%3A1px%20solid%20%23d5dae3%3Bpadding%2Dbottom%3A%2E2rem%7D%0Ah3%7Bmargin%2Dtop%3A1%2E4rem%7D%0Atable%7Bborder%2Dcollapse%3Acollapse%3Bmargin%3A1rem%200%3Bfont%2Dsize%3A%2E9em%3Bwidth%3A100%25%7D%0Ath%2Ctd%7Bborder%3A1px%20solid%20%23c9cfda%3Bpadding%3A5px%208px%3Bvertical%2Dalign%3Atop%3Btext%2Dalign%3Aleft%7D%0Ath%7Bbackground%3A%23eef2f8%7D%0Acode%7Bbackground%3A%23f1f3f7%3Bpadding%3A1px%204px%3Bborder%2Dradius%3A3px%3Bfont%2Dsize%3A%2E88em%7D%0Apre%7Bbackground%3A%23f6f8fa%3Bpadding%3A%2E8rem%3Bborder%2Dradius%3A6px%3Boverflow%2Dx%3Aauto%3Bfont%2Dsize%3A%2E82em%3Bline%2Dheight%3A1%2E35%7D%0Apre%20code%7Bbackground%3Anone%3Bpadding%3A0%7D%0Aheader%23title%2Dblock%2Dheader%20h1%2Etitle%7Bmargin%2Dtop%3A0%7D%0A%40media%20print%7Bbody%7Bmax%2Dwidth%3Anone%3Bmargin%3A0%3Bfont%2Dsize%3A11pt%7Dpre%2Ctable%7Bpage%2Dbreak%2Dinside%3Aavoid%7Dh2%7Bpage%2Dbreak%2Dafter%3Aavoid%7D%7D%0A" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ENSO Dashboard — Web Deployment Plan (Demo)</h1>
+</header>
+<p><em>Status: decisions made (§0); repo prep files added and a production build verified locally; <strong>not yet deployed</strong> — remaining steps are the guided Cloudflare walkthrough (§5).</em></p>
+<h2 id="decisions-from-the-planning-interview">0. Decisions (from the planning interview)</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Repo access</td>
+<td><strong>Fork / push to your own GitHub account</strong>, then connect Cloudflare to that repo</td>
+</tr>
+<tr class="even">
+<td>Lifespan / audience</td>
+<td><strong>Long-lived, public</strong> → scheduled monthly rebuild (§6) is in scope</td>
+</tr>
+<tr class="odd">
+<td>Data policy</td>
+<td><strong>Fresh NOAA data on each build</strong> (committed files are the fallback)</td>
+</tr>
+<tr class="even">
+<td>Division of work</td>
+<td>Claude prepares the repo; the Cloudflare/GitHub account steps are done together, step by step</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Repo prep already done (uncommitted, awaiting your review):</strong> <code>.node-version</code> (<code>24</code>), <code>public/_headers</code> (cache rules), <code>.github/workflows/monthly-rebuild.yml</code> (monthly deploy-hook trigger; needs the secret from §6). <code>npx tsc --noEmit</code> and <code>npx vite build</code> pass locally; <code>dist/</code> contains <code>index.html</code>, <code>assets/</code>, <code>data/</code>, <code>_headers</code>. Not yet done: committing, creating the fork, anything in Cloudflare.</p>
+<p><strong>Note:</strong> the working tree also has uncommitted changes to <code>data-prep/raw/*</code> and <code>public/data/*</code> that this prep did not make (a data refresh run elsewhere); decide whether to commit that fresh snapshot with the prep files.</p>
+<h2 id="goal-and-constraints">1. Goal and constraints</h2>
+<p>Put the dashboard on a public URL for demonstration, at <strong>zero cost</strong>, with minimal ongoing effort.</p>
+<p>What the app needs from a host (from the code review — see <code>codebase-summary.md</code>):</p>
+<ul>
+<li>Serve static files only: <code>dist/</code> (HTML, JS, CSS) plus <code>/data/*.json</code>. <strong>No server, no env vars, no secrets, no database.</strong></li>
+<li>Build command <code>npm run build</code> (runs a NOAA refresh, <code>tsc</code>, then <code>vite build</code>); output dir <code>dist</code>; Node ≥ 20 (developed on Node 24).</li>
+<li>JSON is fetched from absolute paths (<code>/data/enso-monthly.json</code>), so serve from a <strong>domain root</strong> (any <code>*.pages.dev</code>, <code>*.netlify.app</code> or custom domain works; a <code>/repo-name/</code> sub-path, e.g. default GitHub Pages project URL, would break data loading unless <code>vite.config</code> <code>base</code> and <code>data.ts</code> are changed).</li>
+<li>No client-side routing → no SPA-fallback rules needed.</li>
+</ul>
+<h2 id="options-compared">2. Options compared</h2>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Cloudflare Pages / Workers static assets</th>
+<th>Netlify</th>
+<th>Vercel</th>
+<th>GitHub Pages</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Free tier fit</td>
+<td>Unlimited bandwidth &amp; requests for static assets; 500 builds/month (Pages)</td>
+<td>100 GB bandwidth, 300 build-minutes/month (credit-based on newer plans)</td>
+<td>Generous, but Hobby is non-commercial only</td>
+<td>Free, 1 GB site / 100 GB/month soft limits</td>
+</tr>
+<tr class="even">
+<td>Git auto-deploy</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Via GitHub Actions</td>
+</tr>
+<tr class="odd">
+<td>Preview URLs per branch/PR</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No (manual)</td>
+</tr>
+<tr class="even">
+<td>Scheduled data refresh</td>
+<td>Deploy hook + any cron (GitHub Actions)</td>
+<td>Build hook + cron</td>
+<td>Deploy hook + cron</td>
+<td>Actions cron natively</td>
+</tr>
+<tr class="odd">
+<td>Already have account</td>
+<td><strong>Yes</strong></td>
+<td>No</td>
+<td>No</td>
+<td>GitHub yes</td>
+</tr>
+<tr class="even">
+<td>Root-domain URL</td>
+<td>Yes (<code>&lt;name&gt;.pages.dev</code>)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Only for <code>user.github.io</code> repos</td>
+</tr>
+</tbody>
+</table>
+<p><em>Free-tier numbers are from memory and change; confirm on the vendor pages before relying on them. Cloudflare has been steering new projects toward “Workers with static assets” rather than classic Pages — both serve this app identically; the steps below use the Git-integrated flow, which is the same in either dashboard.</em></p>
+<h2 id="recommendation">3. Recommendation</h2>
+<p><strong>Cloudflare Pages (Git-integrated).</strong> You already have the account, bandwidth isn’t a concern for a static demo, and previews per branch are useful for showing work in progress. Netlify is the equally easy fallback and needs no changes to this plan beyond the settings screen.</p>
+<h2 id="pre-deployment-checklist-repo-changes">4. Pre-deployment checklist (repo changes)</h2>
+<p>Small, all optional except where marked.</p>
+<ol type="1">
+<li><p><strong>Pin the Node version</strong> (<em>recommended</em>): add <code>.node-version</code> containing <code>24</code> (Cloudflare/Netlify both read it), or set <code>NODE_VERSION=24</code> as a build env var.</p></li>
+<li><p><strong>Verify a clean production build locally</strong>: <code>npm ci &amp;&amp; npm run build &amp;&amp; npm run preview</code>; click through every section (map, event row zoom, rate toggle, legend isolate, frequency window buttons, theme toggle) in the built bundle, not just dev.</p></li>
+<li><p><strong>Decide on build-time NOAA refresh</strong> (<em>see Q4</em>): default behaviour re-downloads on every CI build (stamp file is gitignored), which makes each deploy self-updating but means a build depends on NOAA being reachable. It falls back to the committed raw files if not, so it cannot hard-fail. Alternative: deploy with <code>npm run data:build &amp;&amp; tsc &amp;&amp; vite build</code> as the build command to pin the committed snapshot (fully reproducible demo).</p></li>
+<li><p><strong>Housekeeping, optional</strong>: remove the unused <code>rg</code> dependency; fix the stale doc path comment in <code>classify.ts</code>.</p></li>
+<li><p><strong>Repo access</strong> (<em>see Q1</em>): the <code>origin</code> remote is <code>github.com/rohans0/ENSO_dashboard</code>. Cloudflare’s Git integration needs permission on whichever repo it builds from.</p></li>
+<li><p><strong>Caching headers, optional</strong>: add <code>public/_headers</code> so HTML revalidates but hashed assets are immutable, and the JSON refreshes within an hour:</p>
+<pre><code>/data/*
+  Cache-Control: public, max-age=3600
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable</code></pre></li>
+</ol>
+<h2 id="deployment-steps-cloudflare-pages">5. Deployment steps — Cloudflare Pages</h2>
+<ol type="1">
+<li>Make the code available to Cloudflare: either (a) authorize the Cloudflare GitHub app on the repo <code>rohans0/ENSO_dashboard</code>, or (b) fork/push to your own GitHub account and authorize that (see Q1).</li>
+<li>Cloudflare dashboard → <strong>Workers &amp; Pages → Create → Pages → Connect to Git</strong> → select the repo, branch <code>main</code>.</li>
+<li>Build settings:
+<ul>
+<li>Framework preset: <strong>None</strong> (or Vite — same values)</li>
+<li>Build command: <code>npm run build</code></li>
+<li>Build output directory: <code>dist</code></li>
+<li>Root directory: <em>(blank)</em></li>
+<li>Environment variable: <code>NODE_VERSION = 24</code> (if no <code>.node-version</code> file)</li>
+</ul></li>
+<li><strong>Save and Deploy.</strong> First build takes ~1–2 min (installs, NOAA download, type-check, bundle). The site goes live at <code>https://&lt;project&gt;.pages.dev</code>.</li>
+<li>Smoke test the live URL (checklist in §7).</li>
+<li><em>(Optional)</em> Custom domain: Pages project → Custom domains → add a domain/subdomain on your Cloudflare zone; DNS and TLS are automatic.</li>
+</ol>
+<p><strong>Alternative without Git integration</strong> (no repo permissions needed): <code>npm run build</code>, then upload with <code>npx wrangler pages deploy dist --project-name enso-dashboard</code> (requires <code>wrangler login</code>, run from your machine). Fastest for a one-off demo; no automatic updates.</p>
+<h2 id="keeping-data-fresh-optional-demo-grade">6. Keeping data fresh (optional, demo-grade)</h2>
+<p>NOAA indices change monthly. Two ways to keep the demo current without touching it:</p>
+<ul>
+<li><strong>Scheduled rebuild (recommended if demo will live &gt; a month):</strong> create a Cloudflare <strong>Deploy Hook</strong> (Pages project → Settings → Builds &amp; deployments → Deploy hooks), then add a GitHub Actions workflow with <code>on: schedule: cron: &#39;0 6 5 * *&#39;</code> (the 5th of each month) that <code>curl -X POST</code>s the hook URL (stored as a repo secret). Each rebuild re-downloads NOAA data via <code>prebuild</code>.</li>
+<li><strong>Manual:</strong> <code>npm run data:refresh:force</code>, commit <code>data-prep/raw/*</code> and <code>public/data/*</code>, push; Pages redeploys.</li>
+</ul>
+<h2 id="verification-checklist-after-deploy">7. Verification checklist (after deploy)</h2>
+<ul class="task-list">
+<li><input type="checkbox" disabled></input>
+Page loads; no console errors; both <code>/data/enso-monthly.json</code> and <code>/data/enso-events.json</code> return 200 with JSON.</li>
+<li><input type="checkbox" disabled></input>
+Regional map draws coastlines (checks the dynamically imported <code>world-atlas</code> chunk).</li>
+<li><input type="checkbox" disabled></input>
+KaTeX math renders in the info panels (fonts load).</li>
+<li><input type="checkbox" disabled></input>
+Event-row click zooms; range slider drags; smoothing slider works.</li>
+<li><input type="checkbox" disabled></input>
+Rate-of-change toggle, legend isolate, frequency window buttons all work.</li>
+<li><input type="checkbox" disabled></input>
+Dark/light toggle persists on reload.</li>
+<li><input type="checkbox" disabled></input>
+Mobile width: no unusable overflow (the app has no responsive breakpoints — a known gap, acceptable for a demo but worth knowing before presenting on a phone).</li>
+<li><input type="checkbox" disabled></input>
+Latest ONI value in the stat tile matches NOAA’s current table.</li>
+</ul>
+<h2 id="risks-and-mitigations">8. Risks and mitigations</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Risk</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>NOAA unreachable during build</td>
+<td>stale data</td>
+<td>Built-in fallback to committed raw files; or pin snapshot (step 4.3)</td>
+</tr>
+<tr class="even">
+<td>NOAA changes a file format</td>
+<td>parser throws → <strong>build fails</strong> (the fallback only covers download errors, not parse errors)</td>
+<td>Previous successful deployment stays live; fix parser; consider pinning snapshot for demos</td>
+</tr>
+<tr class="odd">
+<td>Wrong Node version</td>
+<td>build error from Vite 8 / TS 6</td>
+<td><code>.node-version</code> / <code>NODE_VERSION</code></td>
+</tr>
+<tr class="even">
+<td>Repo owned by another GitHub account</td>
+<td>can’t connect Git integration</td>
+<td>Fork, or use direct <code>wrangler</code> upload</td>
+</tr>
+<tr class="odd">
+<td>Free-tier limits change</td>
+<td>n/a for static demo</td>
+<td>Re-check vendor pages; Netlify is a drop-in alternative</td>
+</tr>
+<tr class="even">
+<td>Public URL exposes work-in-progress</td>
+<td>reputational</td>
+<td>Use a non-obvious <code>*.pages.dev</code> name; restrict previews with Cloudflare Access if needed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="rollback">9. Rollback</h2>
+<p>Pages keeps every deployment: dashboard → Deployments → previous build → <strong>Rollback to this deployment</strong>. For Git-driven changes, <code>git revert</code> and push.</p>
+<h2 id="estimated-effort">10. Estimated effort</h2>
+<p>~30–45 minutes for first deploy (mostly repo-permission setup and one build); ~15 minutes extra for the scheduled refresh.</p>
+<h2 id="remaining-questions">11. Remaining questions</h2>
+<ol type="1">
+<li><strong>Cloudflare setup:</strong> classic <em>Pages</em> or the newer <em>Workers static assets</em> flow? (Whichever the dashboard offers you; settings are identical — we’ll follow what you see.)</li>
+<li><strong>Custom domain:</strong> is <code>&lt;name&gt;.pages.dev</code> fine for a long-lived link, or do you want a domain on your Cloudflare zone?</li>
+<li><strong>Pre-deploy polish:</strong> deploy as-is, or address the layout/mobile gap (plan.md workstream 4) first?</li>
+<li><strong>Fork name:</strong> keep <code>ENSO_dashboard</code>, or rename? (Becomes the default project/URL name.)</li>
+</ol>
+<h2 id="guided-walkthrough-do-together-in-order">12. Guided walkthrough (do together, in order)</h2>
+<ol type="1">
+<li><strong>Review &amp; commit prep files</strong> (Claude) — decide on the data snapshot noted in §0.</li>
+<li><strong>Create your fork</strong> — on github.com/rohans0/ENSO_dashboard click <em>Fork</em>; or create an empty repo and <code>git remote add mine &lt;url&gt;</code> + <code>git push mine main</code>. <em>(You click, Claude supplies the commands.)</em></li>
+<li><strong>Cloudflare: connect Git</strong> — §5 steps 2–3 (screens and exact values read out one at a time).</li>
+<li><strong>First deploy &amp; smoke test</strong> — §7 checklist.</li>
+<li><strong>Deploy hook + GitHub secret</strong> — create hook in Cloudflare, add <code>CF_PAGES_DEPLOY_HOOK</code> under the fork’s Settings → Secrets → Actions, run the workflow manually via <em>Run workflow</em> to confirm it triggers a build.</li>
+<li><em>(Optional)</em> custom domain.</li>
+</ol>
+</body>
+</html>

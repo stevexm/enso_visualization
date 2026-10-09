@@ -1,0 +1,20 @@
+# Triggers a Cloudflare Pages rebuild monthly so the build's NOAA refresh
+# (npm run prebuild -> data:refresh) picks up newly published index values.
+# Requires repo secret CF_PAGES_DEPLOY_HOOK (Pages > Settings > Builds > Deploy hooks).
+name: Monthly data rebuild
+
+on:
+  schedule:
+    - cron: "0 6 5 * *" # 06:00 UTC on the 5th of each month
+  workflow_dispatch:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Cloudflare deploy hook
+        env:
+          HOOK: ${{ secrets.CF_PAGES_DEPLOY_HOOK }}
+        run: |
+          test -n "$HOOK" || { echo "CF_PAGES_DEPLOY_HOOK secret not set"; exit 1; }
+          curl --fail --silent --show-error -X POST "$HOOK"

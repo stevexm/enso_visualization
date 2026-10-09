@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ENSO Dashboard — Codebase Summary, Architecture and Usage</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="data:text/css,body%7Bfont%2Dfamily%3A%2Dapple%2Dsystem%2C%22Segoe%20UI%22%2CHelvetica%2CArial%2Csans%2Dserif%3Bmax%2Dwidth%3A860px%3Bmargin%3A2rem%20auto%3Bpadding%3A0%201%2E2rem%3Bline%2Dheight%3A1%2E55%3Bcolor%3A%231d2330%3Bfont%2Dsize%3A15px%7D%0Ah1%7Bfont%2Dsize%3A1%2E9rem%3Bborder%2Dbottom%3A2px%20solid%20%232a78d6%3Bpadding%2Dbottom%3A%2E3rem%7D%0Ah2%7Bmargin%2Dtop%3A2rem%3Bborder%2Dbottom%3A1px%20solid%20%23d5dae3%3Bpadding%2Dbottom%3A%2E2rem%7D%0Ah3%7Bmargin%2Dtop%3A1%2E4rem%7D%0Atable%7Bborder%2Dcollapse%3Acollapse%3Bmargin%3A1rem%200%3Bfont%2Dsize%3A%2E9em%3Bwidth%3A100%25%7D%0Ath%2Ctd%7Bborder%3A1px%20solid%20%23c9cfda%3Bpadding%3A5px%208px%3Bvertical%2Dalign%3Atop%3Btext%2Dalign%3Aleft%7D%0Ath%7Bbackground%3A%23eef2f8%7D%0Acode%7Bbackground%3A%23f1f3f7%3Bpadding%3A1px%204px%3Bborder%2Dradius%3A3px%3Bfont%2Dsize%3A%2E88em%7D%0Apre%7Bbackground%3A%23f6f8fa%3Bpadding%3A%2E8rem%3Bborder%2Dradius%3A6px%3Boverflow%2Dx%3Aauto%3Bfont%2Dsize%3A%2E82em%3Bline%2Dheight%3A1%2E35%7D%0Apre%20code%7Bbackground%3Anone%3Bpadding%3A0%7D%0Aheader%23title%2Dblock%2Dheader%20h1%2Etitle%7Bmargin%2Dtop%3A0%7D%0A%40media%20print%7Bbody%7Bmax%2Dwidth%3Anone%3Bmargin%3A0%3Bfont%2Dsize%3A11pt%7Dpre%2Ctable%7Bpage%2Dbreak%2Dinside%3Aavoid%7Dh2%7Bpage%2Dbreak%2Dafter%3Aavoid%7D%7D%0A" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ENSO Dashboard — Codebase Summary, Architecture and Usage</h1>
+</header>
+<p><em>Snapshot of the repository at commit <code>f3467ec</code> (branch <code>main</code>). Companion documents: <a href="definitions.md"><code>definitions.md</code></a> (science, sourcing, classification rules), <a href="plan.md"><code>plan.md</code></a> (feature backlog), <a href="deployment-plan.md"><code>deployment-plan.md</code></a> (web hosting).</em></p>
+<h2 id="what-this-is">1. What this is</h2>
+<p>An interactive, single-page dashboard for monitoring <strong>El Niño / La Niña</strong> (ENSO) using four NOAA-published monthly indices and the ocean–atmosphere feedback (the <em>Bjerknes feedback</em>) that couples them.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Series</th>
+<th>Source</th>
+<th>Record starts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sea-surface temperature</td>
+<td><strong>ONI</strong> (Oceanic Niño Index, Niño 3.4)</td>
+<td>NOAA CPC <code>oni.ascii.txt</code></td>
+<td>1950</td>
+</tr>
+<tr class="even">
+<td>Atmospheric pressure</td>
+<td><strong>SOI</strong> (Southern Oscillation Index, standardized)</td>
+<td>NOAA CPC <code>soi</code> (2nd table)</td>
+<td>1951</td>
+</tr>
+<tr class="odd">
+<td>Subsurface heat content / thermocline proxy</td>
+<td><strong>WWV</strong> (Warm Water Volume)</td>
+<td>NOAA/PMEL <code>wwv.dat</code></td>
+<td>1980</td>
+</tr>
+<tr class="even">
+<td>Trade winds / Walker circulation proxy</td>
+<td><strong>850 mb zonal wind index</strong>, East / Central / West Pacific</td>
+<td>NOAA CPC <code>epac850</code>, <code>cpac850</code>, <code>wpac850</code></td>
+<td>1979</td>
+</tr>
+</tbody>
+</table>
+<p>The app is <strong>fully static</strong>: there is no server. A Node build step downloads and processes the NOAA files into two JSON files; the browser loads those and renders everything client-side.</p>
+<p><strong>Stack:</strong> TypeScript (strict-ish, <code>erasableSyntaxOnly</code>), Vite 8, Observable Plot 0.6 (charts), KaTeX (math), topojson-client + world-atlas (map coastlines), <code>tsx</code> (runs the Node pipeline). No framework — the UI is plain DOM + template strings. Node 24 is in use locally.</p>
+<h2 id="repository-layout">2. Repository layout</h2>
+<pre><code>ENSO_dashboard/
+├── index.html                  # shell: &lt;div id=&quot;app&quot;&gt; + /src/main.ts
+├── package.json                # scripts (below), deps
+├── tsconfig.json               # browser code (src/)
+├── data-prep/                  # Node pipeline — NOT shipped to the browser
+│   ├── tsconfig.json           #   separate config, targets Node
+│   ├── raw/                    #   committed copies of the 6 NOAA source files
+│   └── src/
+│       ├── refresh.ts          #   downloads raw files (throttled to 1×/week)
+│       ├── build.ts            #   parse → z-score → merge → classify → write JSON
+│       ├── parseOni.ts         #   oni.ascii.txt  → monthly series
+│       ├── parseWwv.ts         #   wwv.dat        → volume + anomaly series
+│       ├── fixedWidthTable.ts  #   column-sliced parser for soi / *850 tables
+│       ├── baseline.ts         #   per-calendar-month 1991–2020 z-score
+│       ├── classify.ts         #   El Niño / La Niña event detection + coupled check
+│       └── types.ts
+├── public/data/                # pipeline output, fetched by the browser
+│   ├── enso-monthly.json       #   ~254 KB, one record per month
+│   └── enso-events.json        #   ~15 KB, the event catalog
+├── src/                        # the dashboard
+│   ├── main.ts                 #   page assembly, state, event wiring (~810 lines)
+│   ├── charts.ts               #   4 Observable Plot builders
+│   ├── ui.ts                   #   stat tiles, event table, data table (HTML strings)
+│   ├── stats.ts                #   rolling mean, trailing regression slope, smoothRecords
+│   ├── frequency.ts            #   DFT periodogram, AR1 red-noise significance, peak finding
+│   ├── rangeSlider.ts          #   dependency-free dual-handle time-window slider
+│   ├── format.ts               #   labels, ONI classification, date-range presets, CSS-var helper
+│   ├── variableDetails.ts      #   formula + description for each coupled variable
+│   ├── math.ts                 #   KaTeX wrapper (renderMath)
+│   ├── data.ts                 #   loadData(): fetch the two JSON files
+│   ├── types.ts                #   MonthlyRecord, EnsoEvent, DateRangePreset
+│   └── style.css               #   design tokens (light/dark), layout, components
+└── docs/                       # definitions.md, plan.md, and this summary</code></pre>
+<h2 id="architecture">3. Architecture</h2>
+<pre><code> NOAA CPC / PMEL (6 text files, no CORS headers)
+          │  npm run data:refresh  (Node fetch, ≤ 1×/week)
+          ▼
+ data-prep/raw/*.txt|dat  ──►  data-prep/src/build.ts
+                                  │ parse (fixed-width / whitespace)
+                                  │ z-score WWV + winds vs 1991–2020 monthly climatology
+                                  │ merge on &quot;YYYY-MM&quot;
+                                  │ find ENSO events + coupled-signature check
+                                  ▼
+                       public/data/enso-monthly.json
+                       public/data/enso-events.json
+                                  │  Vite copies public/ → dist/
+                                  ▼
+ Browser: src/main.ts  ── fetch JSON ──► state ──► charts.ts / ui.ts ──► DOM (SVG + HTML)</code></pre>
+<h3 id="key-decisions-full-rationale-in-definitions.md-4">Key decisions (full rationale in <code>definitions.md</code> §4)</h3>
+<ul>
+<li><strong>Build-time data, not live fetch.</strong> NOAA endpoints send no <code>Access-Control-Allow-Origin</code>, so browsers can’t call them directly; the data also changes monthly. Hence static JSON.</li>
+<li><strong>Fixed-width parsing.</strong> SOI and wind tables pack 6-character fields with no guaranteed separator (<code>…-1.4-999.9…</code>), so <code>fixedWidthTable.ts</code> slices by column; <code>-999.9</code> sentinels are dropped.</li>
+<li><strong>Per-calendar-month z-scores.</strong> WWV and winds have strong seasonality; mean/std are computed per calendar month over 1991–2020 (sample std, N−1) so Junes are compared only to Junes.</li>
+<li><strong>Client-side rendering.</strong> Observable Plot runs in the real DOM, enabling tooltips and interaction.</li>
+</ul>
+<h2 id="data-pipeline-in-detail-data-prep">4. Data pipeline in detail (<code>data-prep/</code>)</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>File</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Download</td>
+<td><code>refresh.ts</code></td>
+<td>Fetches 6 URLs in parallel; on failure logs a warning and keeps the committed copy (never blocks). Skips entirely if <code>data-prep/raw/.last-refresh</code> (gitignored) is &lt; 7 days old unless <code>--force</code>.</td>
+</tr>
+<tr class="even">
+<td>Parse</td>
+<td><code>parseOni.ts</code>, <code>parseWwv.ts</code>, <code>fixedWidthTable.ts</code></td>
+<td>ONI season labels (DJF…NDJ) map to their centre month. SOI uses table #2 (“standardized”); winds use table #1.</td>
+</tr>
+<tr class="odd">
+<td>Baseline</td>
+<td><code>baseline.ts</code></td>
+<td><code>toMonthlyClimatologyZScore()</code> applied to WWV anomaly and the three wind series. SOI and ONI are used as published.</td>
+</tr>
+<tr class="even">
+<td>Merge</td>
+<td><code>build.ts</code></td>
+<td>Union of dates across ONI/SOI/WWV/East-wind → sorted → one <code>MonthlyRecord</code> per month with <code>null</code> for missing values.</td>
+</tr>
+<tr class="odd">
+<td>Classify</td>
+<td><code>classify.ts</code></td>
+<td>An <strong>event</strong> = ≥ 5 consecutive months with ONI ≥ +0.5 (El Niño) or ≤ −0.5 (La Niña). Category from peak |ONI|: weak &lt; 1.0 ≤ moderate &lt; 1.5 ≤ strong &lt; 2.0 ≤ very-strong (“Super”). <strong>Coupled signature</strong> <code>confirmed</code>: mean SOI &lt; 0, WWV z &gt; 0, East-wind z &lt; 0 for El Niño (mirrored for La Niña); <code>null</code> if any leg lacks data (pre-1980 events).</td>
+</tr>
+<tr class="even">
+<td>Output</td>
+<td><code>build.ts</code></td>
+<td>Writes <code>enso-monthly.json</code> (compact) and <code>enso-events.json</code> (pretty-printed); prints record count, event count, latest ONI.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data model</strong> (<code>src/types.ts</code>): <code>MonthlyRecord</code> = <code>{date &quot;YYYY-MM&quot;, year, month, oniAnom, soiStd, wwvVolume, wwvAnom, wwvZ, windEast/Central/West Raw+Z}</code> (all numeric fields nullable). <code>EnsoEvent</code> = <code>{phase, category, startDate, endDate, peakDate, peakOni, durationMonths, coupledSignature{meanSoiStd, meanWwvZ, meanWindEastZ, confirmed}}</code>.</p>
+<h2 id="the-dashboard-src">5. The dashboard (<code>src/</code>)</h2>
+<h3 id="page-sections-top-bottom">5.1 Page sections (top → bottom)</h3>
+<ol type="1">
+<li><strong>Header</strong> — title, subtitle, light/dark theme toggle.</li>
+<li><strong>Smoothing bar</strong> — 1–12 month rolling-average slider (display-only).</li>
+<li><strong>Regional Map</strong> — projected Pacific map with real coastlines; Niño 3.4 box tinted by ONI, WWV region tinted by heat-content z, three wind-sector boxes with arrows scaled/directed by each sector’s z-score. Shows the <em>latest month in the current window</em>.</li>
+<li><strong>ENSO Event Catalog</strong> — “info” panel (recharge-oscillator equations in KaTeX, onset-rate formula, category legend), “view events” sortable table (period, category, peak ONI, peak month, onset rate, coupled signature), and “Jump to” preset chips. Clicking a row zooms the whole page to that event ±12 months.</li>
+<li><strong>ONI chart</strong> — diverging warm/cool area chart, ±0.5 and ±2.0 threshold lines, labelled super-events; “rate of change” toggle (trailing 3-month OLS slope); “info” panel; the dual-handle <strong>time-window slider</strong>; collapsible raw data table.</li>
+<li><strong>Coupled Ocean–Atmosphere chart</strong> — SOI, WWV z, East-wind z with El Niño/La Niña bands. The legend is clickable: toggling hides series and rescales the y-axis; isolating one shows its formula + definition.</li>
+<li><strong>Frequency Analysis</strong> — log–log DFT periodogram of the full ONI record, red-noise (AR1) significance threshold with confidence slider (60–99.9 %), labelled dominant modes, window-function buttons (rectangular / Hann / Welch / Tukey).</li>
+<li><strong>Stat tiles</strong> — latest ONI (or its rate), SOI, WWV z, wind z within the current window.</li>
+<li><strong>Footer</strong> — source links and the “all series are monthly” note.</li>
+</ol>
+<h3 id="state-and-rendering-model">5.2 State and rendering model</h3>
+<p>State lives in module-level variables in <code>main.ts</code> (no framework): <code>allRecords</code>, <code>allEvents</code>, <code>rangeStartIdx/EndIdx</code>, <code>smoothingWindow</code>, <code>visibleSeries</code>, <code>oniRateMode</code>, <code>eventSort</code>, <code>freqConfidence</code>, <code>freqWindow</code>, <code>selectedPresetKey</code>. Rendering is split by cost so interactions stay smooth:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Re-renders</th>
+<th>Triggered by</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>renderContent()</code></td>
+<td>everything incl. tables</td>
+<td>zoom/pan, presets, event-row click</td>
+</tr>
+<tr class="even">
+<td><code>renderChartsAndStats()</code></td>
+<td>charts + tiles, not tables</td>
+<td>smoothing, theme change, resize (150 ms debounce)</td>
+</tr>
+<tr class="odd">
+<td><code>renderCoupledChartOnly()</code></td>
+<td>coupled chart + legend + detail card</td>
+<td>legend clicks</td>
+</tr>
+<tr class="even">
+<td><code>renderOniAndStats()</code></td>
+<td>ONI chart + tiles</td>
+<td>rate-of-change toggle</td>
+</tr>
+<tr class="odd">
+<td><code>renderEventsTableOnly()</code></td>
+<td>event table</td>
+<td>column-header sort</td>
+</tr>
+<tr class="even">
+<td><code>renderFrequencyChart()</code></td>
+<td>frequency chart</td>
+<td>confidence slider, window buttons</td>
+</tr>
+</tbody>
+</table>
+<p>Slider drags use <code>requestAnimationFrame</code> coalescing (<code>scheduleRender</code>). The range slider is built once and only its position is updated, so a drag’s DOM is never replaced mid-gesture. The map is async (land geometry is a dynamic import) and uses a render token to discard stale results.</p>
+<h3 id="computation-modules">5.3 Computation modules</h3>
+<ul>
+<li><strong><code>stats.ts</code></strong> — <code>rollingMean</code> (trailing, null-aware), <code>trailingSlope</code> (OLS over a trailing window; null across gaps), <code>smoothRecords</code> (applies smoothing to ONI/SOI/WWV z/wind z only).</li>
+<li><strong><code>frequency.ts</code></strong> — O(n²) DFT periodogram (fine at ~900 points), optional taper windows, AR1 red-noise null spectrum scaled to the periodogram’s mean (Torrence &amp; Compo 1998), threshold = red noise × −ln(1−c), dominant modes = local maxima above threshold (top 6). Whole-record only; independent of zoom/smoothing.</li>
+<li><strong>Theming</strong> — colours are CSS custom properties; <code>cssVar()</code> reads them at chart-build time, so a theme switch just re-renders charts. Theme choice persists in <code>localStorage</code> (<code>enso-theme</code>), defaulting to the OS preference.</li>
+</ul>
+<h2 id="usage">6. Usage</h2>
+<h3 id="commands">6.1 Commands</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>npm install</code></td>
+<td>install dependencies</td>
+</tr>
+<tr class="even">
+<td><code>npm run dev</code></td>
+<td>(pre: <code>data:refresh</code>) start Vite dev server</td>
+</tr>
+<tr class="odd">
+<td><code>npm run build</code></td>
+<td>(pre: <code>data:refresh</code>) <code>tsc</code> type-check + <code>vite build</code> → <code>dist/</code></td>
+</tr>
+<tr class="even">
+<td><code>npm run preview</code></td>
+<td>serve <code>dist/</code> locally</td>
+</tr>
+<tr class="odd">
+<td><code>npm run data:refresh</code></td>
+<td>download NOAA files (weekly throttle) then rebuild JSON</td>
+</tr>
+<tr class="even">
+<td><code>npm run data:refresh:force</code></td>
+<td>same, ignoring the throttle</td>
+</tr>
+<tr class="odd">
+<td><code>npm run data:build</code></td>
+<td>rebuild JSON from existing <code>data-prep/raw/</code> only</td>
+</tr>
+<tr class="even">
+<td><code>npm run data:typecheck</code></td>
+<td>type-check the Node pipeline</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typical-workflows">6.2 Typical workflows</h3>
+<ul>
+<li><strong>Run locally:</strong> <code>npm install &amp;&amp; npm run dev</code>, open the printed URL.</li>
+<li><strong>Update data:</strong> <code>npm run data:refresh:force</code>; reload the browser (dev mode needs no rebuild). Commit the changed <code>data-prep/raw/*</code> and <code>public/data/*</code> if you want the repo to carry the new snapshot.</li>
+<li><strong>Change a classification rule:</strong> edit <code>data-prep/src/classify.ts</code>, run <code>npm run data:build</code>, and update the matching text in <code>docs/definitions.md</code> and <code>src/charts.ts</code> (<code>ONI_THRESHOLDS</code>) / <code>src/format.ts</code> (<code>classifyOniReading</code>) — the tier cut-offs exist in three places.</li>
+<li><strong>Verify changes:</strong> <code>npx tsc --noEmit</code> (the project’s gate), then check visually in a browser; type-checking doesn’t prove charts render.</li>
+</ul>
+<h2 id="status-known-gaps-and-observations">7. Status, known gaps and observations</h2>
+<p><strong>Shipped</strong> (per <code>plan.md</code>): smoothing slider, custom time-window slider, KaTeX math + definitions + interactive legend, measurement-interval clarity, regional map, frequency analysis, ONI rate-of-change toggle, onset-rate column.</p>
+<p><strong>Open backlog</strong> (<code>plan.md</code>): onset-rate distribution view; rate-of-change for the coupled chart; finer-than-monthly data (requires gridded NetCDF sources and a new data-prep job); map layers (SST raster, wind streamlines); layout density (page is one long vertical stack, no responsive breakpoints).</p>
+<p><strong>Observations from the review</strong> (not bugs requested to be fixed — flagged for awareness):</p>
+<ol type="1">
+<li><strong>No automated tests.</strong> The only gate is <code>tsc</code>; the pipeline’s sanity check is the manual comparison against known strong events (<code>definitions.md</code> §2.3).</li>
+<li><strong>Tier thresholds are duplicated</strong> in <code>classify.ts</code>, <code>format.ts</code>, <code>charts.ts</code> and the HTML legend in <code>main.ts</code>.</li>
+<li><strong><code>rg</code> dependency</strong> in <code>package.json</code> appears unused (no import in <code>src/</code> or <code>data-prep/</code>).</li>
+<li><strong>Absolute data URLs.</strong> <code>data.ts</code> fetches <code>/data/enso-*.json</code> from the site root, so the app must be served from a domain root (or the paths changed / Vite <code>base</code> used) — relevant to hosting.</li>
+<li><strong>Build needs network (soft).</strong> <code>prebuild</code> calls NOAA; if unreachable it falls back to the committed raw files, so a build never hard-fails on NOAA being down. Because <code>.last-refresh</code> is gitignored, every fresh CI build re-downloads.</li>
+<li><strong>Stale comment:</strong> <code>classify.ts</code> refers to <code>docs/data-and-definitions.md</code>, which is now <code>docs/definitions.md</code>; <code>definitions.md</code> §4 mentions a sibling <code>csv-parser/</code> project not in this repo.</li>
+<li><strong>Caveat on science</strong> (documented in <code>definitions.md</code>): NOAA’s <em>official</em> monitoring has moved to RONI; this app keeps ONI for the longer record, and the strength bins are RONI’s applied to ONI by convention.</li>
+</ol>
+</body>
+</html>
