@@ -3,7 +3,7 @@ title: "ENSO Dashboard — Codebase Summary, Architecture and Usage"
 ---
 
 
-*Snapshot of the repository at commit `f3467ec` (branch `main`). Companion documents: [`definitions.md`](definitions.md) (science, sourcing, classification rules), [`plan.md`](plan.md) (feature backlog), [`deployment-plan.md`](deployment-plan.md) (web hosting).*
+*Version 1.0.0. Live at https://enso-visualization.smelnikoff.workers.dev. Snapshot of the repository after the deployment commits (branch `main`; reviewed at `f3467ec`). Companion documents: [`definitions.md`](definitions.md) (science, sourcing, classification rules), [`plan.md`](plan.md) (feature backlog), [`deployment-plan.md`](deployment-plan.md) (web hosting).*
 
 ## 1. What this is
 
@@ -154,7 +154,11 @@ Slider drags use `requestAnimationFrame` coalescing (`scheduleRender`). The rang
 - **Change a classification rule:** edit `data-prep/src/classify.ts`, run `npm run data:build`, and update the matching text in `docs/definitions.md` and `src/charts.ts` (`ONI_THRESHOLDS`) / `src/format.ts` (`classifyOniReading`) — the tier cut-offs exist in three places.
 - **Verify changes:** `npx tsc --noEmit` (the project's gate), then check visually in a browser; type-checking doesn't prove charts render.
 
-## 7. Status, known gaps and observations
+## 7. Deployment
+
+Hosted on Cloudflare (Workers static assets, built from the public GitHub fork `stevexm/enso_visualization` on every push to `main`). Config lives in `wrangler.jsonc`, `.node-version` and `public/_headers`; `.github/workflows/monthly-rebuild.yml` is intended to trigger a monthly rebuild so NOAA data stays current. Details and open items: [`deployment-plan.md`](deployment-plan.md) §14.
+
+## 8. Status, known gaps and observations
 
 **Shipped** (per `plan.md`): smoothing slider, custom time-window slider, KaTeX math + definitions + interactive legend, measurement-interval clarity, regional map, frequency analysis, ONI rate-of-change toggle, onset-rate column.
 

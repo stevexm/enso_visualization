@@ -3,7 +3,7 @@ title: "ENSO Dashboard — Web Deployment Plan (Demo)"
 ---
 
 
-*Status: decisions made (§0); repo prep files added and a production build verified locally; **not yet deployed** — remaining steps are the guided Cloudflare walkthrough (§5).*
+*Status: **deployed (v1.0.0, 2026-10-09)** at https://enso-visualization.smelnikoff.workers.dev. Outstanding: the monthly data-refresh trigger (§6, §13).*
 
 ## 0. Decisions (from the planning interview)
 
@@ -141,3 +141,19 @@ After seeing the account's "Create an app" screen, the plan switched from classi
 - Settings: connect `stevexm/enso_visualization`, branch `main`, build command `npm run build`, deploy command `npx wrangler deploy`, root directory blank, env var `NODE_VERSION=24` if needed.
 - Live URL form: `https://enso-visualization.<account-subdomain>.workers.dev`.
 - Monthly refresh: use a deploy hook if the project's Settings → Builds offers one; otherwise change the workflow to push an empty commit to `main` monthly.
+
+## 14. As deployed (2026-10-09)
+
+| Item | Value |
+|---|---|
+| Live URL | https://enso-visualization.smelnikoff.workers.dev |
+| Platform | Cloudflare Workers static assets (newer "Create an app" flow), Workers Builds from Git |
+| Source repo | `stevexm/enso_visualization` (public fork of `rohans0/ENSO_dashboard`), branch `main`; local git remote `mine` |
+| Build / deploy | `npm run build` / `npx wrangler deploy`; root `/`; Node 24 via `.node-version` (the `NODE_VERSION` env var was skipped — form glitch — and not needed) |
+| Config | `wrangler.jsonc` (name `enso-visualization`, assets `./dist`) |
+| First build | Succeeded; NOAA refresh ok, 921 records through 2026-09, 42 events, latest ONI +2.16 (2026-08); 66 assets uploaded |
+| Smoke test | `/`, `/data/enso-monthly.json`, `/data/enso-events.json` all HTTP 200; cache headers from `public/_headers` active |
+| Warnings accepted | `workers_dev` and preview URLs enabled by default (set `workers_dev`/`preview_urls` in `wrangler.jsonc` to override) |
+| Isolation | Separate project; existing `orbit-web` Worker and domains untouched. Cloudflare's GitHub connection for the WEglobal-Studios org is unchanged; the `stevexm` account was added alongside it |
+
+**Outstanding:** monthly refresh. Check the project's Settings → Builds for deploy hooks; if present, add the hook URL as repo secret `CF_PAGES_DEPLOY_HOOK` and run the *Monthly data rebuild* workflow manually to test. If not, change the workflow to push an empty commit monthly. Until then, pushing any commit to `main` triggers a rebuild with fresh NOAA data.

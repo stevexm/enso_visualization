@@ -23,7 +23,7 @@
 <header id="title-block-header">
 <h1 class="title">ENSO Dashboard — Codebase Summary, Architecture and Usage</h1>
 </header>
-<p><em>Snapshot of the repository at commit <code>f3467ec</code> (branch <code>main</code>). Companion documents: <a href="definitions.md"><code>definitions.md</code></a> (science, sourcing, classification rules), <a href="plan.md"><code>plan.md</code></a> (feature backlog), <a href="deployment-plan.md"><code>deployment-plan.md</code></a> (web hosting).</em></p>
+<p><em>Version 1.0.0. Live at https://enso-visualization.smelnikoff.workers.dev. Snapshot of the repository after the deployment commits (branch <code>main</code>; reviewed at <code>f3467ec</code>). Companion documents: <a href="definitions.md"><code>definitions.md</code></a> (science, sourcing, classification rules), <a href="plan.md"><code>plan.md</code></a> (feature backlog), <a href="deployment-plan.md"><code>deployment-plan.md</code></a> (web hosting).</em></p>
 <h2 id="what-this-is">1. What this is</h2>
 <p>An interactive, single-page dashboard for monitoring <strong>El Niño / La Niña</strong> (ENSO) using four NOAA-published monthly indices and the ocean–atmosphere feedback (the <em>Bjerknes feedback</em>) that couples them.</p>
 <table>
@@ -297,7 +297,9 @@
 <li><strong>Change a classification rule:</strong> edit <code>data-prep/src/classify.ts</code>, run <code>npm run data:build</code>, and update the matching text in <code>docs/definitions.md</code> and <code>src/charts.ts</code> (<code>ONI_THRESHOLDS</code>) / <code>src/format.ts</code> (<code>classifyOniReading</code>) — the tier cut-offs exist in three places.</li>
 <li><strong>Verify changes:</strong> <code>npx tsc --noEmit</code> (the project’s gate), then check visually in a browser; type-checking doesn’t prove charts render.</li>
 </ul>
-<h2 id="status-known-gaps-and-observations">7. Status, known gaps and observations</h2>
+<h2 id="deployment">7. Deployment</h2>
+<p>Hosted on Cloudflare (Workers static assets, built from the public GitHub fork <code>stevexm/enso_visualization</code> on every push to <code>main</code>). Config lives in <code>wrangler.jsonc</code>, <code>.node-version</code> and <code>public/_headers</code>; <code>.github/workflows/monthly-rebuild.yml</code> is intended to trigger a monthly rebuild so NOAA data stays current. Details and open items: <a href="deployment-plan.md"><code>deployment-plan.md</code></a> §14.</p>
+<h2 id="status-known-gaps-and-observations">8. Status, known gaps and observations</h2>
 <p><strong>Shipped</strong> (per <code>plan.md</code>): smoothing slider, custom time-window slider, KaTeX math + definitions + interactive legend, measurement-interval clarity, regional map, frequency analysis, ONI rate-of-change toggle, onset-rate column.</p>
 <p><strong>Open backlog</strong> (<code>plan.md</code>): onset-rate distribution view; rate-of-change for the coupled chart; finer-than-monthly data (requires gridded NetCDF sources and a new data-prep job); map layers (SST raster, wind streamlines); layout density (page is one long vertical stack, no responsive breakpoints).</p>
 <p><strong>Observations from the review</strong> (not bugs requested to be fixed — flagged for awareness):</p>

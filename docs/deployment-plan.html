@@ -23,7 +23,7 @@
 <header id="title-block-header">
 <h1 class="title">ENSO Dashboard — Web Deployment Plan (Demo)</h1>
 </header>
-<p><em>Status: decisions made (§0); repo prep files added and a production build verified locally; <strong>not yet deployed</strong> — remaining steps are the guided Cloudflare walkthrough (§5).</em></p>
+<p><em>Status: <strong>deployed (v1.0.0, 2026-10-09)</strong> at https://enso-visualization.smelnikoff.workers.dev. Outstanding: the monthly data-refresh trigger (§6, §13).</em></p>
 <h2 id="decisions-from-the-planning-interview">0. Decisions (from the planning interview)</h2>
 <table>
 <colgroup>
@@ -263,5 +263,57 @@ Latest ONI value in the stat tile matches NOAA’s current table.</li>
 <li>Live URL form: <code>https://enso-visualization.&lt;account-subdomain&gt;.workers.dev</code>.</li>
 <li>Monthly refresh: use a deploy hook if the project’s Settings → Builds offers one; otherwise change the workflow to push an empty commit to <code>main</code> monthly.</li>
 </ul>
+<h2 id="as-deployed-2026-10-09">14. As deployed (2026-10-09)</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Live URL</td>
+<td>https://enso-visualization.smelnikoff.workers.dev</td>
+</tr>
+<tr class="even">
+<td>Platform</td>
+<td>Cloudflare Workers static assets (newer “Create an app” flow), Workers Builds from Git</td>
+</tr>
+<tr class="odd">
+<td>Source repo</td>
+<td><code>stevexm/enso_visualization</code> (public fork of <code>rohans0/ENSO_dashboard</code>), branch <code>main</code>; local git remote <code>mine</code></td>
+</tr>
+<tr class="even">
+<td>Build / deploy</td>
+<td><code>npm run build</code> / <code>npx wrangler deploy</code>; root <code>/</code>; Node 24 via <code>.node-version</code> (the <code>NODE_VERSION</code> env var was skipped — form glitch — and not needed)</td>
+</tr>
+<tr class="odd">
+<td>Config</td>
+<td><code>wrangler.jsonc</code> (name <code>enso-visualization</code>, assets <code>./dist</code>)</td>
+</tr>
+<tr class="even">
+<td>First build</td>
+<td>Succeeded; NOAA refresh ok, 921 records through 2026-09, 42 events, latest ONI +2.16 (2026-08); 66 assets uploaded</td>
+</tr>
+<tr class="odd">
+<td>Smoke test</td>
+<td><code>/</code>, <code>/data/enso-monthly.json</code>, <code>/data/enso-events.json</code> all HTTP 200; cache headers from <code>public/_headers</code> active</td>
+</tr>
+<tr class="even">
+<td>Warnings accepted</td>
+<td><code>workers_dev</code> and preview URLs enabled by default (set <code>workers_dev</code>/<code>preview_urls</code> in <code>wrangler.jsonc</code> to override)</td>
+</tr>
+<tr class="odd">
+<td>Isolation</td>
+<td>Separate project; existing <code>orbit-web</code> Worker and domains untouched. Cloudflare’s GitHub connection for the WEglobal-Studios org is unchanged; the <code>stevexm</code> account was added alongside it</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Outstanding:</strong> monthly refresh. Check the project’s Settings → Builds for deploy hooks; if present, add the hook URL as repo secret <code>CF_PAGES_DEPLOY_HOOK</code> and run the <em>Monthly data rebuild</em> workflow manually to test. If not, change the workflow to push an empty commit monthly. Until then, pushing any commit to <code>main</code> triggers a rebuild with fresh NOAA data.</p>
 </body>
 </html>

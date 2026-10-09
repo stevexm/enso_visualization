@@ -1,14 +1,14 @@
 [
   {
     "phase": "la-nina",
-    "category": "strong-la-nina",
+    "category": "moderate-la-nina",
     "startDate": "1950-01",
-    "endDate": "1950-07",
+    "endDate": "1951-01",
     "peakDate": "1950-01",
-    "peakOni": -1.53,
-    "durationMonths": 7,
+    "peakOni": -1.32,
+    "durationMonths": 13,
     "coupledSignature": {
-      "meanSoiStd": null,
+      "meanSoiStd": 1.5,
       "meanWwvZ": null,
       "meanWindEastZ": null,
       "confirmed": null
@@ -20,7 +20,7 @@
     "startDate": "1951-06",
     "endDate": "1952-01",
     "peakDate": "1951-10",
-    "peakOni": 1.15,
+    "peakOni": 1.03,
     "durationMonths": 8,
     "coupledSignature": {
       "meanSoiStd": -0.6875000000000001,
@@ -32,13 +32,13 @@
   {
     "phase": "el-nino",
     "category": "weak-el-nino",
-    "startDate": "1953-02",
-    "endDate": "1954-01",
+    "startDate": "1953-04",
+    "endDate": "1953-12",
     "peakDate": "1953-10",
-    "peakOni": 0.84,
-    "durationMonths": 12,
+    "peakOni": 0.78,
+    "durationMonths": 9,
     "coupledSignature": {
-      "meanSoiStd": -0.375,
+      "meanSoiStd": -0.5,
       "meanWwvZ": null,
       "meanWindEastZ": null,
       "confirmed": null
@@ -47,13 +47,13 @@
   {
     "phase": "la-nina",
     "category": "strong-la-nina",
-    "startDate": "1954-05",
-    "endDate": "1956-08",
+    "startDate": "1955-03",
+    "endDate": "1956-04",
     "peakDate": "1955-11",
-    "peakOni": -1.67,
-    "durationMonths": 28,
+    "peakOni": -1.59,
+    "durationMonths": 14,
     "coupledSignature": {
-      "meanSoiStd": 0.9392857142857143,
+      "meanSoiStd": 1.1428571428571428,
       "meanWwvZ": null,
       "meanWindEastZ": null,
       "confirmed": null
@@ -63,27 +63,12 @@
     "phase": "el-nino",
     "category": "strong-el-nino",
     "startDate": "1957-04",
-    "endDate": "1958-07",
+    "endDate": "1958-05",
     "peakDate": "1958-01",
-    "peakOni": 1.81,
-    "durationMonths": 16,
+    "peakOni": 1.69,
+    "durationMonths": 14,
     "coupledSignature": {
-      "meanSoiStd": -0.26874999999999993,
-      "meanWwvZ": null,
-      "meanWindEastZ": null,
-      "confirmed": null
-    }
-  },
-  {
-    "phase": "el-nino",
-    "category": "weak-el-nino",
-    "startDate": "1958-11",
-    "endDate": "1959-03",
-    "peakDate": "1959-02",
-    "peakOni": 0.62,
-    "durationMonths": 5,
-    "coupledSignature": {
-      "meanSoiStd": -0.39999999999999997,
+      "meanSoiStd": -0.3571428571428571,
       "meanWwvZ": null,
       "meanWindEastZ": null,
       "confirmed": null
@@ -92,13 +77,13 @@
   {
     "phase": "el-nino",
     "category": "moderate-el-nino",
-    "startDate": "1963-06",
+    "startDate": "1963-07",
     "endDate": "1964-02",
     "peakDate": "1963-11",
-    "peakOni": 1.37,
-    "durationMonths": 9,
+    "peakOni": 1.19,
+    "durationMonths": 8,
     "coupledSignature": {
-      "meanSoiStd": -0.5333333333333334,
+      "meanSoiStd": -0.5375000000000001,
       "meanWwvZ": null,
       "meanWindEastZ": null,
       "confirmed": null
@@ -109,8 +94,8 @@
     "category": "weak-la-nina",
     "startDate": "1964-05",
     "endDate": "1965-01",
-    "peakDate": "1964-11",
-    "peakOni": -0.82,
+    "peakDate": "1964-10",
+    "peakOni": -0.8,
     "durationMonths": 9,
     "coupledSignature": {
       "meanSoiStd": 0.5777777777777778,
@@ -123,27 +108,12 @@
     "phase": "el-nino",
     "category": "strong-el-nino",
     "startDate": "1965-06",
-    "endDate": "1966-04",
-    "peakDate": "1965-10",
-    "peakOni": 1.98,
-    "durationMonths": 11,
+    "endDate": "1966-03",
+    "peakDate": "1965-11",
+    "peakOni": 1.82,
+    "durationMonths": 10,
     "coupledSignature": {
-      "meanSoiStd": -0.8363636363636363,
-      "meanWwvZ": null,
-      "meanWindEastZ": null,
-      "confirmed": null
-    }
-  },
-  {
-    "phase": "el-nino",
-    "category": "moderate-el-nino",
-    "startDate": "1968-10",
-    "endDate": "1969-05",
-    "peakDate": "1969-01",
-    "peakOni": 1.13,
-    "durationMonths": 8,
-    "coupledSignature": {
-      "meanSoiStd": -0.30000000000000004,
+      "meanSoiStd": -0.9,
       "meanWwvZ": null,
       "meanWindEastZ": null,
       "confirmed": null
@@ -152,13 +122,13 @@
   {
     "phase": "el-nino",
     "category": "weak-el-nino",
-    "startDate": "1969-08",
-    "endDate": "1970-01",
-    "peakDate": "1969-10",
-    "peakOni": 0.86,
-    "durationMonths": 6,
+    "startDate": "1968-10",
+    "endDate": "1969-05",
+    "peakDate": "1969-01",
+    "peakOni": 0.98,
+    "durationMonths": 8,
     "coupledSignature": {
-      "meanSoiStd": -0.46666666666666673,
+      "meanSoiStd": -0.30000000000000004,
       "meanWwvZ": null,
       "meanWindEastZ": null,
       "confirmed": null
@@ -170,7 +140,7 @@
     "startDate": "1970-07",
     "endDate": "1972-01",
     "peakDate": "1971-02",
-    "peakOni": -1.38,
+    "peakOni": -1.36,
     "durationMonths": 19,
     "coupledSignature": {
       "meanSoiStd": 1.0368421052631578,
@@ -181,14 +151,14 @@
   },
   {
     "phase": "el-nino",
-    "category": "very-strong-el-nino",
-    "startDate": "1972-05",
+    "category": "strong-el-nino",
+    "startDate": "1972-06",
     "endDate": "1973-03",
-    "peakDate": "1972-12",
-    "peakOni": 2.12,
-    "durationMonths": 11,
+    "peakDate": "1972-11",
+    "peakOni": 1.84,
+    "durationMonths": 10,
     "coupledSignature": {
-      "meanSoiStd": -0.8090909090909093,
+      "meanSoiStd": -0.73,
       "meanWwvZ": null,
       "meanWindEastZ": null,
       "confirmed": null
@@ -198,12 +168,12 @@
     "phase": "la-nina",
     "category": "very-strong-la-nina",
     "startDate": "1973-05",
-    "endDate": "1974-07",
+    "endDate": "1974-06",
     "peakDate": "1973-12",
-    "peakOni": -2.03,
-    "durationMonths": 15,
+    "peakOni": -2.04,
+    "durationMonths": 14,
     "coupledSignature": {
-      "meanSoiStd": 1.3399999999999999,
+      "meanSoiStd": 1.357142857142857,
       "meanWwvZ": null,
       "meanWindEastZ": null,
       "confirmed": null
@@ -215,7 +185,7 @@
     "startDate": "1974-10",
     "endDate": "1976-03",
     "peakDate": "1975-12",
-    "peakOni": -1.65,
+    "peakOni": -1.58,
     "durationMonths": 18,
     "coupledSignature": {
       "meanSoiStd": 1.211111111111111,
@@ -229,8 +199,8 @@
     "category": "weak-el-nino",
     "startDate": "1976-09",
     "endDate": "1977-02",
-    "peakDate": "1976-11",
-    "peakOni": 0.86,
+    "peakDate": "1976-12",
+    "peakOni": 0.84,
     "durationMonths": 6,
     "coupledSignature": {
       "meanSoiStd": 0.0833333333333333,
@@ -242,13 +212,13 @@
   {
     "phase": "el-nino",
     "category": "weak-el-nino",
-    "startDate": "1977-09",
-    "endDate": "1978-01",
+    "startDate": "1977-10",
+    "endDate": "1978-02",
     "peakDate": "1977-11",
-    "peakOni": 0.81,
+    "peakOni": 0.84,
     "durationMonths": 5,
     "coupledSignature": {
-      "meanSoiStd": -0.9,
+      "meanSoiStd": -1.28,
       "meanWwvZ": null,
       "meanWindEastZ": null,
       "confirmed": null
@@ -259,8 +229,8 @@
     "category": "very-strong-el-nino",
     "startDate": "1982-05",
     "endDate": "1983-06",
-    "peakDate": "1982-12",
-    "peakOni": 2.23,
+    "peakDate": "1983-01",
+    "peakOni": 2.14,
     "durationMonths": 14,
     "coupledSignature": {
       "meanSoiStd": -1.607142857142857,
@@ -271,11 +241,26 @@
   },
   {
     "phase": "la-nina",
+    "category": "weak-la-nina",
+    "startDate": "1983-10",
+    "endDate": "1984-02",
+    "peakDate": "1983-11",
+    "peakOni": -0.96,
+    "durationMonths": 5,
+    "coupledSignature": {
+      "meanSoiStd": 0.27999999999999997,
+      "meanWwvZ": -3.263647986757671,
+      "meanWindEastZ": 1.4738202393013455,
+      "confirmed": true
+    }
+  },
+  {
+    "phase": "la-nina",
     "category": "moderate-la-nina",
     "startDate": "1984-10",
     "endDate": "1985-06",
     "peakDate": "1984-12",
-    "peakOni": -1.14,
+    "peakOni": -1.06,
     "durationMonths": 9,
     "coupledSignature": {
       "meanSoiStd": 0.3111111111111111,
@@ -286,16 +271,16 @@
   },
   {
     "phase": "el-nino",
-    "category": "strong-el-nino",
+    "category": "moderate-el-nino",
     "startDate": "1986-09",
-    "endDate": "1988-02",
-    "peakDate": "1987-08",
-    "peakOni": 1.7,
-    "durationMonths": 18,
+    "endDate": "1988-01",
+    "peakDate": "1987-09",
+    "peakOni": 1.49,
+    "durationMonths": 17,
     "coupledSignature": {
-      "meanSoiStd": -0.788888888888889,
-      "meanWwvZ": -0.5670987503818437,
-      "meanWindEastZ": 0.36679366770854216,
+      "meanSoiStd": -0.8117647058823529,
+      "meanWwvZ": -0.4507189723346123,
+      "meanWindEastZ": 0.32819603118965973,
       "confirmed": false
     }
   },
@@ -320,7 +305,7 @@
     "startDate": "1991-06",
     "endDate": "1992-06",
     "peakDate": "1992-01",
-    "peakOni": 1.71,
+    "peakOni": 1.54,
     "durationMonths": 13,
     "coupledSignature": {
       "meanSoiStd": -0.9692307692307692,
@@ -331,16 +316,16 @@
   },
   {
     "phase": "el-nino",
-    "category": "moderate-el-nino",
-    "startDate": "1994-09",
-    "endDate": "1995-03",
+    "category": "weak-el-nino",
+    "startDate": "1994-10",
+    "endDate": "1995-02",
     "peakDate": "1994-12",
-    "peakOni": 1.09,
-    "durationMonths": 7,
+    "peakOni": 0.97,
+    "durationMonths": 5,
     "coupledSignature": {
-      "meanSoiStd": -0.6,
-      "meanWwvZ": -0.5732559025643906,
-      "meanWindEastZ": -0.16150484814886207,
+      "meanSoiStd": -0.68,
+      "meanWwvZ": -0.44743041940014316,
+      "meanWindEastZ": -0.41672666014985243,
       "confirmed": false
     }
   },
@@ -350,7 +335,7 @@
     "startDate": "1995-08",
     "endDate": "1996-03",
     "peakDate": "1995-11",
-    "peakOni": -1,
+    "peakOni": -1.05,
     "durationMonths": 8,
     "coupledSignature": {
       "meanSoiStd": 0.3125,
@@ -364,8 +349,8 @@
     "category": "very-strong-el-nino",
     "startDate": "1997-05",
     "endDate": "1998-04",
-    "peakDate": "1997-11",
-    "peakOni": 2.4,
+    "peakDate": "1997-12",
+    "peakOni": 2.37,
     "durationMonths": 12,
     "coupledSignature": {
       "meanSoiStd": -1.5416666666666663,
@@ -378,29 +363,44 @@
     "phase": "la-nina",
     "category": "strong-la-nina",
     "startDate": "1998-07",
-    "endDate": "2001-02",
-    "peakDate": "2000-01",
-    "peakOni": -1.66,
-    "durationMonths": 32,
+    "endDate": "2000-06",
+    "peakDate": "1999-12",
+    "peakOni": -1.53,
+    "durationMonths": 24,
     "coupledSignature": {
-      "meanSoiStd": 0.9375,
-      "meanWwvZ": -0.8449961027196903,
-      "meanWindEastZ": 0.3549812325461438,
+      "meanSoiStd": 0.9249999999999999,
+      "meanWwvZ": -1.1858523653092923,
+      "meanWindEastZ": 0.3860853391875432,
       "confirmed": true
+    }
+  },
+  {
+    "phase": "la-nina",
+    "category": "weak-la-nina",
+    "startDate": "2000-10",
+    "endDate": "2001-02",
+    "peakDate": "2000-12",
+    "peakOni": -0.78,
+    "durationMonths": 5,
+    "coupledSignature": {
+      "meanSoiStd": 1.28,
+      "meanWwvZ": 0.14287539065765648,
+      "meanWindEastZ": 0.409756658059481,
+      "confirmed": false
     }
   },
   {
     "phase": "el-nino",
     "category": "moderate-el-nino",
-    "startDate": "2002-06",
+    "startDate": "2002-07",
     "endDate": "2003-02",
     "peakDate": "2002-11",
-    "peakOni": 1.31,
-    "durationMonths": 9,
+    "peakOni": 1.19,
+    "durationMonths": 8,
     "coupledSignature": {
-      "meanSoiStd": -0.5777777777777778,
-      "meanWwvZ": 0.33090783457812056,
-      "meanWindEastZ": -0.14539818233658433,
+      "meanSoiStd": -0.625,
+      "meanWwvZ": 0.3470445034289215,
+      "meanWindEastZ": -0.21840049566900865,
       "confirmed": true
     }
   },
@@ -409,8 +409,8 @@
     "category": "weak-el-nino",
     "startDate": "2004-08",
     "endDate": "2005-02",
-    "peakDate": "2004-09",
-    "peakOni": 0.7,
+    "peakDate": "2004-12",
+    "peakOni": 0.71,
     "durationMonths": 7,
     "coupledSignature": {
       "meanSoiStd": -0.7142857142857143,
@@ -425,7 +425,7 @@
     "startDate": "2005-11",
     "endDate": "2006-03",
     "peakDate": "2006-01",
-    "peakOni": -0.85,
+    "peakOni": -0.86,
     "durationMonths": 5,
     "coupledSignature": {
       "meanSoiStd": 0.68,
@@ -440,7 +440,7 @@
     "startDate": "2006-09",
     "endDate": "2007-01",
     "peakDate": "2006-11",
-    "peakOni": 0.94,
+    "peakOni": 0.88,
     "durationMonths": 5,
     "coupledSignature": {
       "meanSoiStd": -0.5799999999999998,
@@ -452,15 +452,15 @@
   {
     "phase": "la-nina",
     "category": "strong-la-nina",
-    "startDate": "2007-07",
+    "startDate": "2007-08",
     "endDate": "2008-06",
     "peakDate": "2008-01",
-    "peakOni": -1.64,
-    "durationMonths": 12,
+    "peakOni": -1.76,
+    "durationMonths": 11,
     "coupledSignature": {
-      "meanSoiStd": 0.8833333333333333,
-      "meanWwvZ": 0.36955897030937385,
-      "meanWindEastZ": 0.29286922527656417,
+      "meanSoiStd": 0.990909090909091,
+      "meanWwvZ": 0.4418121440082883,
+      "meanWindEastZ": 0.3498545658715091,
       "confirmed": false
     }
   },
@@ -470,7 +470,7 @@
     "startDate": "2008-11",
     "endDate": "2009-03",
     "peakDate": "2009-01",
-    "peakOni": -0.85,
+    "peakOni": -0.89,
     "durationMonths": 5,
     "coupledSignature": {
       "meanSoiStd": 1.2200000000000002,
@@ -482,15 +482,15 @@
   {
     "phase": "el-nino",
     "category": "strong-el-nino",
-    "startDate": "2009-08",
+    "startDate": "2009-07",
     "endDate": "2010-03",
     "peakDate": "2009-12",
-    "peakOni": 1.56,
-    "durationMonths": 8,
+    "peakOni": 1.5,
+    "durationMonths": 9,
     "coupledSignature": {
-      "meanSoiStd": -0.7125,
-      "meanWwvZ": 0.6232271374689977,
-      "meanWindEastZ": -0.6115703535853805,
+      "meanSoiStd": -0.6111111111111112,
+      "meanWwvZ": 0.6210682322161214,
+      "meanWindEastZ": -0.504607407255435,
       "confirmed": true
     }
   },
@@ -498,14 +498,14 @@
     "phase": "la-nina",
     "category": "strong-la-nina",
     "startDate": "2010-06",
-    "endDate": "2011-04",
-    "peakDate": "2010-10",
-    "peakOni": -1.64,
-    "durationMonths": 11,
+    "endDate": "2011-05",
+    "peakDate": "2010-11",
+    "peakOni": -1.57,
+    "durationMonths": 12,
     "coupledSignature": {
-      "meanSoiStd": 1.9545454545454546,
-      "meanWwvZ": -0.06252963383415086,
-      "meanWindEastZ": -0.03492777792915079,
+      "meanSoiStd": 1.825,
+      "meanWwvZ": 0.04870075804036502,
+      "meanWindEastZ": -0.13426188658788174,
       "confirmed": false
     }
   },
@@ -528,39 +528,39 @@
     "phase": "el-nino",
     "category": "very-strong-el-nino",
     "startDate": "2014-10",
-    "endDate": "2016-04",
+    "endDate": "2016-05",
     "peakDate": "2015-12",
-    "peakOni": 2.75,
-    "durationMonths": 19,
+    "peakOni": 2.59,
+    "durationMonths": 20,
     "coupledSignature": {
-      "meanSoiStd": -0.9,
-      "meanWwvZ": 0.08072325707012035,
-      "meanWindEastZ": -0.6776788515280953,
-      "confirmed": true
+      "meanSoiStd": -0.8350000000000002,
+      "meanWwvZ": -0.029302018185551938,
+      "meanWindEastZ": -0.6532431229224289,
+      "confirmed": false
     }
   },
   {
     "phase": "la-nina",
     "category": "weak-la-nina",
-    "startDate": "2017-10",
+    "startDate": "2017-11",
     "endDate": "2018-03",
     "peakDate": "2017-12",
-    "peakOni": -0.86,
-    "durationMonths": 6,
+    "peakOni": -0.76,
+    "durationMonths": 5,
     "coupledSignature": {
-      "meanSoiStd": 0.6333333333333333,
-      "meanWwvZ": -0.25197724195736226,
-      "meanWindEastZ": 0.5298344267299054,
+      "meanSoiStd": 0.5800000000000001,
+      "meanWwvZ": -0.12694824518421044,
+      "meanWindEastZ": 0.6413940439329663,
       "confirmed": true
     }
   },
   {
     "phase": "el-nino",
-    "category": "weak-el-nino",
+    "category": "moderate-el-nino",
     "startDate": "2018-09",
     "endDate": "2019-06",
-    "peakDate": "2018-11",
-    "peakOni": 0.97,
+    "peakDate": "2018-12",
+    "peakOni": 1.05,
     "durationMonths": 10,
     "coupledSignature": {
       "meanSoiStd": -0.20999999999999996,
@@ -572,30 +572,30 @@
   {
     "phase": "el-nino",
     "category": "weak-el-nino",
-    "startDate": "2019-11",
+    "startDate": "2019-10",
     "endDate": "2020-03",
     "peakDate": "2019-12",
-    "peakOni": 0.66,
-    "durationMonths": 5,
+    "peakOni": 0.75,
+    "durationMonths": 6,
     "coupledSignature": {
-      "meanSoiStd": -0.28,
-      "meanWwvZ": 0.10796734717850902,
-      "meanWindEastZ": 0.1826233975666543,
+      "meanSoiStd": -0.3000000000000001,
+      "meanWwvZ": 0.10075194225782313,
+      "meanWindEastZ": 0.07295579666358117,
       "confirmed": false
     }
   },
   {
     "phase": "la-nina",
     "category": "moderate-la-nina",
-    "startDate": "2020-08",
+    "startDate": "2020-09",
     "endDate": "2021-04",
     "peakDate": "2020-11",
-    "peakOni": -1.2,
-    "durationMonths": 9,
+    "peakOni": -1.11,
+    "durationMonths": 8,
     "coupledSignature": {
-      "meanSoiStd": 1.0111111111111113,
-      "meanWwvZ": 0.27127342796594367,
-      "meanWindEastZ": 1.2346333980162667,
+      "meanSoiStd": 0.9999999999999999,
+      "meanWwvZ": 0.3150757603873381,
+      "meanWindEastZ": 1.2182382456537422,
       "confirmed": false
     }
   },
@@ -604,8 +604,8 @@
     "category": "weak-la-nina",
     "startDate": "2021-09",
     "endDate": "2023-01",
-    "peakDate": "2022-09",
-    "peakOni": -0.97,
+    "peakDate": "2021-11",
+    "peakOni": -0.91,
     "durationMonths": 17,
     "coupledSignature": {
       "meanSoiStd": 1.2411764705882353,
@@ -616,16 +616,16 @@
   },
   {
     "phase": "el-nino",
-    "category": "very-strong-el-nino",
-    "startDate": "2023-05",
+    "category": "strong-el-nino",
+    "startDate": "2023-06",
     "endDate": "2024-04",
     "peakDate": "2023-12",
-    "peakOni": 2.06,
-    "durationMonths": 12,
+    "peakOni": 1.99,
+    "durationMonths": 11,
     "coupledSignature": {
-      "meanSoiStd": -0.44166666666666665,
-      "meanWwvZ": 0.0706973903841085,
-      "meanWindEastZ": 0.28190190906680307,
+      "meanSoiStd": -0.3909090909090909,
+      "meanWwvZ": -0.05492447216719039,
+      "meanWindEastZ": 0.1867954559499955,
       "confirmed": false
     }
   }
