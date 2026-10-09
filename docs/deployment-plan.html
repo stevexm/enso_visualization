@@ -255,5 +255,13 @@ Latest ONI value in the stat tile matches NOAA’s current table.</li>
 <li><strong>Deploy hook + GitHub secret</strong> — create hook in Cloudflare, add <code>CF_PAGES_DEPLOY_HOOK</code> under the fork’s Settings → Secrets → Actions, run the workflow manually via <em>Run workflow</em> to confirm it triggers a build.</li>
 <li><em>(Optional)</em> custom domain.</li>
 </ol>
+<h2 id="revision-newer-workers-static-assets-flow-chosen">13. Revision: newer Workers static-assets flow chosen</h2>
+<p>After seeing the account’s “Create an app” screen, the plan switched from classic Pages to the newer flow. Differences from §5:</p>
+<ul>
+<li><code>wrangler.jsonc</code> added at the repo root (<code>name: enso-visualization</code>, assets directory <code>./dist</code>). The Cloudflare project name must match it.</li>
+<li>Settings: connect <code>stevexm/enso_visualization</code>, branch <code>main</code>, build command <code>npm run build</code>, deploy command <code>npx wrangler deploy</code>, root directory blank, env var <code>NODE_VERSION=24</code> if needed.</li>
+<li>Live URL form: <code>https://enso-visualization.&lt;account-subdomain&gt;.workers.dev</code>.</li>
+<li>Monthly refresh: use a deploy hook if the project’s Settings → Builds offers one; otherwise change the workflow to push an empty commit to <code>main</code> monthly.</li>
+</ul>
 </body>
 </html>

@@ -132,3 +132,12 @@ Pages keeps every deployment: dashboard → Deployments → previous build → *
 4. **First deploy & smoke test** — §7 checklist.
 5. **Deploy hook + GitHub secret** — create hook in Cloudflare, add `CF_PAGES_DEPLOY_HOOK` under the fork's Settings → Secrets → Actions, run the workflow manually via *Run workflow* to confirm it triggers a build.
 6. *(Optional)* custom domain.
+
+## 13. Revision: newer Workers static-assets flow chosen
+
+After seeing the account's "Create an app" screen, the plan switched from classic Pages to the newer flow. Differences from §5:
+
+- `wrangler.jsonc` added at the repo root (`name: enso-visualization`, assets directory `./dist`). The Cloudflare project name must match it.
+- Settings: connect `stevexm/enso_visualization`, branch `main`, build command `npm run build`, deploy command `npx wrangler deploy`, root directory blank, env var `NODE_VERSION=24` if needed.
+- Live URL form: `https://enso-visualization.<account-subdomain>.workers.dev`.
+- Monthly refresh: use a deploy hook if the project's Settings → Builds offers one; otherwise change the workflow to push an empty commit to `main` monthly.
